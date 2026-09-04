@@ -1,0 +1,84 @@
+import { motion } from 'framer-motion';
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react';
+import { cn } from '@/lib/utils';
+
+// Framer Motion's motion.button/motion.a redefine these DOM event handlers
+// with incompatible signatures (e.g. onAnimationStart takes a Framer
+// AnimationDefinition, not a DOM AnimationEvent). Omitting them from the
+// native attribute types below keeps the two APIs from colliding — Button
+// never needs to expose them, since nothing in this project passes
+// onAnimationStart/onDrag* to a Button.
+type MotionConflictingProps =
+  | 'onAnimationStart'
+  | 'onAnimationEnd'
+  | 'onAnimationIteration'
+  | 'onDrag'
+  | 'onDragStart'
+  | 'onDragEnd';
+
+type Variant = 'primary' | 'ghost';
+
+interface BaseProps {
+  variant?: Variant;
+  className?: string;
+  children: ReactNode;
+}
+
+type ButtonAsButton = BaseProps &
+  Omit<ButtonHTMLAttributes<HTMLButtonElement>, MotionConflictingProps> & { as?: 'button' };
+
+type ButtonAsAnchor = BaseProps &
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, MotionConflictingProps> & { as: 'a'; href: string };
+
+export type ButtonProps = ButtonAsButton | ButtonAsAnchor;
+
+const variantClasses: Record<Variant, string> = {
+  // Uses --accent-strong (not --accent) at the gradient's accent end: at
+  // WCAG AA, text-primary-foreground must clear 4.5:1 against BOTH ends,
+  // and plain --accent only manages 2.44:1 there (see globals.css).
+  primary:
+    'bg-gradient-to-r from-primary to-accent-strong text-primary-foreground shadow-[0_10px_30px_-8px_color-mix(in_oklch,var(--primary)_55%,transparent)]',
+  ghost: 'bg-white/[0.03] text-foreground border border-border hover:bg-white/[0.06] hover:border-primary',
+};
+
+const MotionAnchor = motion.a;
+const MotionButton = motion.button;
+
+export function Button(props: ButtonProps) {
+  const { variant = 'primary', className, children, ...rest } = props;
+
+  const sharedClassName = cn(
+    'inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5',
+    'font-body text-base font-semibold',
+    'transition-[background-color,box-shadow,border-color] duration-300',
+    variantClasses[variant],
+    className,
+  );
+
+  const motionProps = {
+    whileHover: { scale: 1.03, y: -1 },
+    whileTap: { scale: 0.97, y: 0 },
+    transition: { type: 'spring', stiffness: 380, damping: 24 },
+  } as const;
+
+  if (props.as === 'a') {
+    const { as: _as, href, ...anchorRest } = rest as Omit<AnchorHTMLAttributes<HTMLAnchorElement>, MotionConflictingProps> & {
+      as?: string;
+      href: string;
+    };
+    return (
+      <MotionAnchor href={href} className={sharedClassName} {...motionProps} {...anchorRest}>
+        {children}
+      </MotionAnchor>
+    );
+  }
+
+  const { as: _as, ...buttonRest } = rest as Omit<ButtonHTMLAttributes<HTMLButtonElement>, MotionConflictingProps> & {
+    as?: string;
+  };
+  return (
+    <MotionButton type="button" className={sharedClassName} {...motionProps} {...buttonRest}>
+      {children}
+    </MotionButton>
+  );
+}
