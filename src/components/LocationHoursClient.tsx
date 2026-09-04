@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/i18n/useLanguage';
 import { SectionHeading } from '@/components/ui/SectionHeading';
@@ -6,6 +7,34 @@ import { buildMapsSearchUrl } from '@/lib/maps';
 
 // TODO(pochy): confirm real hours and exact address before launch.
 const MAPS_QUERY = 'Pochy MotorBike Medellín';
+
+/** Small original pictogram, shared shape for both cards in this section. */
+function LocationGlyph({ variant, className = '' }: { variant: 'pin' | 'clock'; className?: string }) {
+  const gradientId = `location-gradient-${useId()}`;
+  return (
+    <svg viewBox="0 0 48 48" className={className} aria-hidden>
+      <defs>
+        <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="var(--primary)" />
+          <stop offset="100%" stopColor="var(--accent)" />
+        </linearGradient>
+      </defs>
+      <g fill="none" stroke={`url(#${gradientId})`} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+        {variant === 'pin' ? (
+          <>
+            <path d="M24 6c8 0 14 6 14 14 0 10-14 22-14 22S10 30 10 20c0-8 6-14 14-14Z" />
+            <circle cx="24" cy="20" r="5" />
+          </>
+        ) : (
+          <>
+            <circle cx="24" cy="24" r="16" />
+            <path d="M24 15v9l7 4" />
+          </>
+        )}
+      </g>
+    </svg>
+  );
+}
 
 export default function LocationHoursClient() {
   const { t } = useLanguage();
@@ -26,7 +55,8 @@ export default function LocationHoursClient() {
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="card-surface p-8"
           >
-            <p className="font-body text-xl font-bold tracking-tight">{t.location.citySummary}</p>
+            <LocationGlyph variant="pin" className="h-10 w-10" />
+            <p className="mt-4 font-body text-xl font-bold tracking-tight">{t.location.citySummary}</p>
             <a
               href={mapsHref}
               target="_blank"
@@ -46,7 +76,8 @@ export default function LocationHoursClient() {
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
             className="card-surface p-8"
           >
-            <p className="font-body text-xl font-bold tracking-tight">{t.location.hoursTitle}</p>
+            <LocationGlyph variant="clock" className="h-10 w-10" />
+            <p className="mt-4 font-body text-xl font-bold tracking-tight">{t.location.hoursTitle}</p>
             <dl className="mt-4 space-y-2">
               {t.location.hours.map((row) => (
                 <div key={row.label} className="flex items-center justify-between text-sm">
