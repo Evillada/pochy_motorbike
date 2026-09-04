@@ -232,6 +232,11 @@ the store's first-visit fallback would deterministically resolve to `"en"`
 instead of `"es"` and break every "shows Spanish by default" assertion —
 pin the locale here, once, so no individual test file needs its own stub.
 
+Several later sections (Tasks 8-12) use Framer Motion's `whileInView`, which
+needs a global `IntersectionObserver` — jsdom doesn't provide one. Stub it
+here too, typed against the real interface (not `any`, per Global
+Constraints), so no individual test file has to.
+
 ```ts
 import '@testing-library/jest-dom/vitest';
 
@@ -243,6 +248,23 @@ Object.defineProperty(navigator, 'language', {
   value: 'es-CO',
   configurable: true,
 });
+
+// Mock IntersectionObserver for framer-motion's whileInView — jsdom doesn't
+// implement it. Typed against the real interface (not `any`) so this stays
+// under strict-mode checking like the rest of the codebase.
+class MockIntersectionObserver implements IntersectionObserver {
+  readonly root: Element | Document | null = null;
+  readonly rootMargin: string = '';
+  readonly thresholds: ReadonlyArray<number> = [];
+  disconnect(): void {}
+  observe(): void {}
+  takeRecords(): IntersectionObserverEntry[] {
+    return [];
+  }
+  unobserve(): void {}
+}
+
+global.IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver;
 ```
 
 - [ ] **Step 8: Create `src/env.d.ts`**
