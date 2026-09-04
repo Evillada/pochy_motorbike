@@ -2,6 +2,20 @@ import { motion } from 'framer-motion';
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
+// Framer Motion's motion.button/motion.a redefine these DOM event handlers
+// with incompatible signatures (e.g. onAnimationStart takes a Framer
+// AnimationDefinition, not a DOM AnimationEvent). Omitting them from the
+// native attribute types below keeps the two APIs from colliding — Button
+// never needs to expose them, since nothing in this project passes
+// onAnimationStart/onDrag* to a Button.
+type MotionConflictingProps =
+  | 'onAnimationStart'
+  | 'onAnimationEnd'
+  | 'onAnimationIteration'
+  | 'onDrag'
+  | 'onDragStart'
+  | 'onDragEnd';
+
 type Variant = 'primary' | 'ghost';
 
 interface BaseProps {
@@ -11,10 +25,10 @@ interface BaseProps {
 }
 
 type ButtonAsButton = BaseProps &
-  ButtonHTMLAttributes<HTMLButtonElement> & { as?: 'button' };
+  Omit<ButtonHTMLAttributes<HTMLButtonElement>, MotionConflictingProps> & { as?: 'button' };
 
 type ButtonAsAnchor = BaseProps &
-  AnchorHTMLAttributes<HTMLAnchorElement> & { as: 'a'; href: string };
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, MotionConflictingProps> & { as: 'a'; href: string };
 
 export type ButtonProps = ButtonAsButton | ButtonAsAnchor;
 
@@ -45,7 +59,7 @@ export function Button(props: ButtonProps) {
   } as const;
 
   if (props.as === 'a') {
-    const { as: _as, href, ...anchorRest } = rest as AnchorHTMLAttributes<HTMLAnchorElement> & {
+    const { as: _as, href, ...anchorRest } = rest as Omit<AnchorHTMLAttributes<HTMLAnchorElement>, MotionConflictingProps> & {
       as?: string;
       href: string;
     };
@@ -56,7 +70,7 @@ export function Button(props: ButtonProps) {
     );
   }
 
-  const { as: _as, ...buttonRest } = rest as ButtonHTMLAttributes<HTMLButtonElement> & {
+  const { as: _as, ...buttonRest } = rest as Omit<ButtonHTMLAttributes<HTMLButtonElement>, MotionConflictingProps> & {
     as?: string;
   };
   return (
