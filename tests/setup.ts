@@ -8,3 +8,14 @@ Object.defineProperty(navigator, 'language', {
   value: 'es-CO',
   configurable: true,
 });
+
+// Mock IntersectionObserver for framer-motion's whileInView
+global.IntersectionObserver = class IntersectionObserver {
+  constructor() {}
+  disconnect() {}
+  observe() {}
+  takeRecords() {
+    return [];
+  }
+  unobserve() {}
+} as any;
