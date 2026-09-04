@@ -9,16 +9,31 @@
     --card: oklch(0.15 0.02 30);
     --card-foreground: oklch(0.97 0.01 90);
 
-    --primary: oklch(0.58 0.22 25);
+    /* Darkened from oklch(0.58 0.22 25) — the previous value measured only
+       4.44:1 against --primary-foreground (marginal for WCAG AA's 4.5:1).
+       Computed with the WCAG relative-luminance formula: 6.17:1. */
+    --primary: oklch(0.5 0.2 25);
     --primary-foreground: oklch(0.98 0.02 25);
 
     --accent: oklch(0.72 0.19 55);
     --accent-foreground: oklch(0.14 0.02 55);
 
+    /* Darker variant of --accent, used ONLY as the accent end of the
+       primary Button's gradient background (never for text/links — those
+       keep using --accent, which already passes contrast on its own, e.g.
+       text-accent on --background measures ~7.9:1). The unmodified --accent
+       measured only 2.44:1 against --primary-foreground, well under WCAG
+       AA's 4.5:1 for normal text. Computed: 8.25:1. */
+    --accent-strong: oklch(0.42 0.17 55);
+
     --muted: oklch(0.2 0.015 30);
     --muted-foreground: oklch(0.72 0.02 60);
 
-    --border: oklch(0.28 0.02 30);
+    /* Raised from oklch(0.28 0.02 30) — the previous value measured only
+       1.40:1 against --background, well under WCAG 1.4.11's 3:1 minimum
+       for non-text UI boundaries (relied on as the sole edge by the ghost
+       Button variant and the header language toggle). Computed: 3.40:1. */
+    --border: oklch(0.5 0.02 30);
     --ring: oklch(0.58 0.22 25);
 
     --radius: 0.75rem;

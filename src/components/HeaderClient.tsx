@@ -26,7 +26,7 @@ export default function HeaderClient() {
     <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-background/70 border-b border-border">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
         <a href="#top" className="flex items-center gap-2">
-          <MotoGlyph className="h-9 w-9" />
+          <MotoGlyph className="h-9 w-9" decorative />
           <span className="font-display text-lg font-bold tracking-wide">Pochy MotorBike</span>
         </a>
 
@@ -53,7 +53,14 @@ export default function HeaderClient() {
           </button>
 
           <div className="hidden sm:block">
-            <Button as="a" href={whatsappHref} variant="primary" className="px-4 py-2 text-sm">
+            <Button
+              as="a"
+              href={whatsappHref}
+              target="_blank"
+              rel="noreferrer"
+              variant="primary"
+              className="px-4 py-2 text-sm"
+            >
               {t.hero.ctaPrimary}
             </Button>
           </div>
@@ -95,7 +102,14 @@ export default function HeaderClient() {
                   {navLabels[anchor]}
                 </a>
               ))}
-              <Button as="a" href={whatsappHref} variant="primary" className="mt-2">
+              <Button
+                as="a"
+                href={whatsappHref}
+                target="_blank"
+                rel="noreferrer"
+                variant="primary"
+                className="mt-2"
+              >
                 {t.hero.ctaPrimary}
               </Button>
             </div>

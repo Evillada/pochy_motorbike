@@ -12,16 +12,16 @@ export default function FooterClient() {
 
   return (
     <MotionRoot>
-    <footer id="contact" className="border-t border-border py-12">
+    <footer id="contact" className="border-t border-border scroll-mt-24 py-12">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 text-center sm:px-6">
-        <MotoGlyph className="h-12 w-12" />
+        <MotoGlyph className="h-12 w-12" decorative />
         <p className="max-w-sm text-sm text-muted-foreground">{t.footer.tagline}</p>
 
         <div className="flex flex-wrap items-center justify-center gap-6 text-sm font-semibold">
           <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" className="text-accent hover:text-primary">
             {t.footer.instagramLabel}
           </a>
-          <a href={whatsappHref} className="text-accent hover:text-primary">
+          <a href={whatsappHref} target="_blank" rel="noreferrer" className="text-accent hover:text-primary">
             {t.footer.whatsappLabel}
           </a>
         </div>

@@ -13,7 +13,7 @@ export default function LocationHoursClient() {
 
   return (
     <MotionRoot>
-    <section id="location" className="speed-divider relative py-24">
+    <section id="location" className="speed-divider relative scroll-mt-24 py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <SectionHeading index="03" eyebrow={t.location.eyebrow} title={t.location.title} />
 

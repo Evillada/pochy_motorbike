@@ -13,7 +13,7 @@ export default function WhyUsClient() {
 
   return (
     <MotionRoot>
-    <section id="why-us" className="speed-divider relative py-24">
+    <section id="why-us" className="speed-divider relative scroll-mt-24 py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <SectionHeading index="02" eyebrow={t.whyUs.eyebrow} title={t.whyUs.title} align="center" />
 

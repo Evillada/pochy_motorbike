@@ -9,7 +9,7 @@ export default function ServicesClient() {
 
   return (
     <MotionRoot>
-    <section id="services" className="speed-divider relative py-24">
+    <section id="services" className="speed-divider relative scroll-mt-24 py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <SectionHeading
           index="01"
@@ -37,6 +37,8 @@ export default function ServicesClient() {
               <p className="mt-2 text-sm text-muted-foreground">{service.description}</p>
               <a
                 href={buildWhatsAppUrl(service.whatsappMessage)}
+                target="_blank"
+                rel="noreferrer"
                 aria-label={`${t.services.ctaLabel} ${service.title}`}
                 className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent transition-colors group-hover:text-primary"
               >

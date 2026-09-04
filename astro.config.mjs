@@ -19,14 +19,6 @@ export default defineConfig({
     },
     build: {
       cssMinify: true,
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            'react-vendor': ['react', 'react-dom'],
-            'motion-vendor': ['framer-motion'],
-          },
-        },
-      },
     },
   },
 });

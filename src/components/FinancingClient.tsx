@@ -31,7 +31,7 @@ export default function FinancingClient() {
           </h2>
           <p className="mt-3 max-w-xl text-muted-foreground">{t.financing.description}</p>
           <div className="mt-6">
-            <Button as="a" href={whatsappHref}>
+            <Button as="a" href={whatsappHref} target="_blank" rel="noreferrer">
               {t.financing.ctaLabel}
             </Button>
           </div>

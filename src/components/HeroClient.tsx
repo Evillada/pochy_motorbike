@@ -23,7 +23,7 @@ export default function HeroClient() {
 
   return (
     <MotionRoot>
-    <section id="top" className="relative flex min-h-screen items-center overflow-hidden pt-24">
+    <section id="top" className="relative flex min-h-screen scroll-mt-24 items-center overflow-hidden pt-24">
       <div
         aria-hidden
         className="absolute inset-0 -z-10 bg-[radial-gradient(60%_50%_at_50%_0%,color-mix(in_oklch,var(--primary)_28%,transparent),transparent_70%)] animate-glow-pulse"
@@ -54,7 +54,7 @@ export default function HeroClient() {
           </motion.p>
 
           <motion.div variants={item} className="mt-8 flex flex-wrap items-center gap-4">
-            <Button as="a" href={whatsappHref}>
+            <Button as="a" href={whatsappHref} target="_blank" rel="noreferrer">
               {t.hero.ctaPrimary}
             </Button>
             <Button as="a" href="#services" variant="ghost">

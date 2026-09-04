@@ -25,7 +25,7 @@ export default function FinalCtaClient() {
         <h2 className="font-display text-3xl font-bold sm:text-4xl">{t.finalCta.title}</h2>
         <p className="mt-3 text-muted-foreground">{t.finalCta.subtitle}</p>
         <div className="mt-8 flex justify-center">
-          <Button as="a" href={whatsappHref}>
+          <Button as="a" href={whatsappHref} target="_blank" rel="noreferrer">
             {t.finalCta.ctaLabel}
           </Button>
         </div>

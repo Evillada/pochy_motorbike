@@ -166,6 +166,7 @@ const es: Translations = {
     title: 'Ubicación y horario',
     citySummary: 'Medellín, Colombia',
     hoursTitle: 'Horario de atención',
+    // TODO(pochy): confirm real hours before launch
     hours: [
       { label: 'Lunes a viernes', value: '8:00 a.m. – 6:00 p.m.' },
       { label: 'Sábado', value: '8:00 a.m. – 1:00 p.m.' },
@@ -279,6 +280,7 @@ const en: Translations = {
     title: 'Location & hours',
     citySummary: 'Medellín, Colombia',
     hoursTitle: 'Opening hours',
+    // TODO(pochy): confirm real hours before launch
     hours: [
       { label: 'Monday to Friday', value: '8:00 am – 6:00 pm' },
       { label: 'Saturday', value: '8:00 am – 1:00 pm' },

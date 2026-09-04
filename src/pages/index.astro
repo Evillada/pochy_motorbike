@@ -9,10 +9,11 @@ import LocationHours from '../components/LocationHours.astro';
 import FinalCta from '../components/FinalCta.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
+import { translations } from '@/i18n/translations';
 
-const title = 'Pochy MotorBike | Taller de motos en Medellín';
-const description =
-  'Pochy MotorBike: taller de motos y mantenimientos generales en Medellín. Agenda tu cita por WhatsApp.';
+// Server-rendered in Spanish by default, matching getServerLang() elsewhere.
+const title = translations.es.meta.title;
+const description = translations.es.meta.description;
 ---
 
 <Layout title={title} description={description}>

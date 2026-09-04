@@ -33,8 +33,11 @@ type ButtonAsAnchor = BaseProps &
 export type ButtonProps = ButtonAsButton | ButtonAsAnchor;
 
 const variantClasses: Record<Variant, string> = {
+  // Uses --accent-strong (not --accent) at the gradient's accent end: at
+  // WCAG AA, text-primary-foreground must clear 4.5:1 against BOTH ends,
+  // and plain --accent only manages 2.44:1 there (see globals.css).
   primary:
-    'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-[0_8px_24px_color-mix(in_oklch,var(--primary)_45%,transparent)]',
+    'bg-gradient-to-r from-primary to-accent-strong text-primary-foreground shadow-[0_8px_24px_color-mix(in_oklch,var(--primary)_45%,transparent)]',
   ghost: 'bg-transparent text-foreground border border-border hover:border-primary',
 };
 
