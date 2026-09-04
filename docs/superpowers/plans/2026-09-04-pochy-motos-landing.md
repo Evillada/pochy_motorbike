@@ -225,8 +225,24 @@ export default defineConfig({
 
 - [ ] **Step 7: Create `tests/setup.ts`**
 
+jsdom's stock `navigator.language` is `"en-US"`. Every `*Client.tsx` test
+from Task 6 onward transitively imports `languageStore` for the first time
+in that test file's own module graph (Vitest isolates each test file), so
+the store's first-visit fallback would deterministically resolve to `"en"`
+instead of `"es"` and break every "shows Spanish by default" assertion —
+pin the locale here, once, so no individual test file needs its own stub.
+
 ```ts
 import '@testing-library/jest-dom/vitest';
+
+// jsdom's stock navigator.language is "en-US". Several tests assert the
+// app's default language ("es") for a first-time visitor with no stored
+// preference — pin the locale globally so that default is deterministic
+// across every test file, instead of each one stubbing it individually.
+Object.defineProperty(navigator, 'language', {
+  value: 'es-CO',
+  configurable: true,
+});
 ```
 
 - [ ] **Step 8: Create `src/env.d.ts`**
