@@ -2,7 +2,12 @@ import { motion } from 'framer-motion';
 import { useLanguage } from '@/i18n/useLanguage';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { MotionRoot } from '@/components/ui/MotionRoot';
+import { ServiceIcon, type ServiceIconKind } from '@/components/ui/ServiceIcon';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+
+// Order matches translations.ts services.items: general maintenance, oil
+// change, brakes, electrical diagnostics, spare parts.
+const SERVICE_ICONS: ServiceIconKind[] = ['maintenance', 'oil', 'brakes', 'electrical', 'parts'];
 
 export default function ServicesClient() {
   const { t } = useLanguage();
@@ -29,10 +34,13 @@ export default function ServicesClient() {
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: (i % 3) * 0.08 }}
               className="card-surface group relative overflow-hidden p-7"
             >
-              <span className="font-display text-sm font-semibold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <h3 className="mt-2 font-display text-xl font-semibold text-card-foreground">
+              <div className="flex items-center justify-between">
+                <ServiceIcon kind={SERVICE_ICONS[i] ?? 'maintenance'} className="h-12 w-12" />
+                <span className="font-display text-sm font-semibold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+              </div>
+              <h3 className="mt-4 font-display text-xl font-semibold text-card-foreground">
                 {service.title}
               </h3>
               <p className="mt-2 text-sm text-muted-foreground">{service.description}</p>
