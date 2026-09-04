@@ -1,3 +1,30 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Services from '../components/Services.astro';
+import Financing from '../components/Financing.astro';
+import WhyUs from '../components/WhyUs.astro';
+import LocationHours from '../components/LocationHours.astro';
+import FinalCta from '../components/FinalCta.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+
+const title = 'Pochy MotorBike | Taller de motos en Medellín';
+const description =
+  'Pochy MotorBike: taller de motos y mantenimientos generales en Medellín. Agenda tu cita por WhatsApp.';
 ---
-<html><body>ok</body></html>
+
+<Layout title={title} description={description}>
+  <Header />
+  <main class="min-h-screen overflow-x-hidden">
+    <Hero />
+    <Services />
+    <Financing />
+    <WhyUs />
+    <LocationHours />
+    <FinalCta />
+  </main>
+  <Footer />
+  <WhatsAppButton />
+</Layout>

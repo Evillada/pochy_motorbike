@@ -12,6 +12,11 @@ export default defineConfig({
   output: 'static',
   compressHTML: true,
   vite: {
+    resolve: {
+      alias: {
+        '@': new URL('./src', import.meta.url).pathname,
+      },
+    },
     build: {
       cssMinify: true,
       rollupOptions: {
