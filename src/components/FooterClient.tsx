@@ -1,5 +1,4 @@
 import { useLanguage } from '@/i18n/useLanguage';
-import { MotoGlyph } from '@/components/ui/MotoGlyph';
 import { MotionRoot } from '@/components/ui/MotionRoot';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
@@ -14,7 +13,7 @@ export default function FooterClient() {
     <MotionRoot>
     <footer id="contact" className="scroll-mt-24 py-16 sm:py-20">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 text-center sm:px-6">
-        <MotoGlyph className="h-12 w-12" decorative />
+        <img src="/images/pochy-logo.jpg" alt="" aria-hidden className="h-14 w-auto mix-blend-screen" />
         <p className="max-w-sm text-sm text-muted-foreground">{t.footer.tagline}</p>
 
         <div className="flex flex-wrap items-center justify-center gap-6 text-sm font-semibold">
