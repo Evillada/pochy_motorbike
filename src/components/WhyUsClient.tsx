@@ -13,7 +13,8 @@ export default function WhyUsClient() {
 
   return (
     <MotionRoot>
-    <section id="why-us" className="relative scroll-mt-24 py-28 sm:py-36">
+    <section id="why-us" className="relative scroll-mt-24 py-28 sm:py-36 overflow-hidden">
+      <div aria-hidden className="blueprint-grid absolute inset-0 -z-10" />
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <SectionHeading index="02" eyebrow={t.whyUs.eyebrow} title={t.whyUs.title} align="center" />
 

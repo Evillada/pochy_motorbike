@@ -82,6 +82,19 @@
       0 1px 0 0 color-mix(in oklch, var(--foreground) 6%, transparent) inset;
   }
 
+  /* Faint technical-blueprint grid — workshop-schematic texture behind a
+     section, without a stock photo. Fades out toward the edges via a mask
+     so it reads as ambient texture, not a hard-edged tile. */
+  .blueprint-grid {
+    background-image:
+      linear-gradient(color-mix(in oklch, var(--border) 60%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in oklch, var(--border) 60%, transparent) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 40%, transparent 90%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 40%, transparent 90%);
+    opacity: 0.5;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
