@@ -109,6 +109,15 @@ export default defineConfig({
   output: 'static',
   compressHTML: true,
   vite: {
+    // tsconfig's `@/*` path only informs the TypeScript language server —
+    // Astro's own production Vite build needs the alias declared here too
+    // (this is the same class of gap Vitest has its own copy of, in
+    // vitest.config.ts below — each bundler needs its own alias config).
+    resolve: {
+      alias: {
+        '@': new URL('./src', import.meta.url).pathname,
+      },
+    },
     build: {
       cssMinify: true,
       rollupOptions: {
