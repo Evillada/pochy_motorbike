@@ -13,19 +13,20 @@ export default function LocationHoursClient() {
 
   return (
     <MotionRoot>
-    <section id="location" className="speed-divider relative scroll-mt-24 py-24">
+    <section id="location" className="relative scroll-mt-24 py-28 sm:py-36">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <SectionHeading index="03" eyebrow={t.location.eyebrow} title={t.location.title} />
 
-        <div className="mt-10 grid gap-8 sm:grid-cols-2">
+        <div className="mt-14 grid gap-6 sm:grid-cols-2">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 24, scale: 0.98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            whileHover={{ y: -6 }}
             viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.5 }}
-            className="rounded-lg border border-border bg-card p-6"
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="card-surface p-8"
           >
-            <p className="font-display text-lg font-semibold">{t.location.citySummary}</p>
+            <p className="font-body text-xl font-bold tracking-tight">{t.location.citySummary}</p>
             <a
               href={mapsHref}
               target="_blank"
@@ -38,13 +39,14 @@ export default function LocationHoursClient() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 24, scale: 0.98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            whileHover={{ y: -6 }}
             viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="rounded-lg border border-border bg-card p-6"
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            className="card-surface p-8"
           >
-            <p className="font-display text-lg font-semibold">{t.location.hoursTitle}</p>
+            <p className="font-body text-xl font-bold tracking-tight">{t.location.hoursTitle}</p>
             <dl className="mt-4 space-y-2">
               {t.location.hours.map((row) => (
                 <div key={row.label} className="flex items-center justify-between text-sm">

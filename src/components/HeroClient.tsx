@@ -1,9 +1,14 @@
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { useLanguage } from '@/i18n/useLanguage';
 import { Button } from '@/components/ui/Button';
 import { MotoGlyph } from '@/components/ui/MotoGlyph';
 import { MotionRoot } from '@/components/ui/MotionRoot';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+
+// Apple's characteristic decelerating curve — used across this file instead
+// of the default easeOut for a softer, more premium settle.
+const EASE_APPLE = [0.16, 1, 0.3, 1] as const;
 
 const container = {
   hidden: {},
@@ -13,17 +18,29 @@ const container = {
 };
 
 const item = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+  hidden: { opacity: 0, y: 28 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE_APPLE } },
 };
 
 export default function HeroClient() {
   const { t } = useLanguage();
   const whatsappHref = buildWhatsAppUrl(t.hero.whatsappMessage);
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
+  // Scroll-linked MotionValues bound via `style` bypass MotionConfig's
+  // reducedMotion handling (that only covers animate/variants/while*), so
+  // the parallax range is guarded manually here.
+  const prefersReducedMotion = useReducedMotion();
+  const glyphY = useTransform(scrollYProgress, [0, 1], prefersReducedMotion ? [0, 0] : [0, 80]);
+
   return (
     <MotionRoot>
-    <section id="top" className="relative flex min-h-screen scroll-mt-24 items-center overflow-hidden pt-24">
+    <section
+      id="top"
+      ref={sectionRef}
+      className="relative flex min-h-screen scroll-mt-24 items-center overflow-hidden pt-24"
+    >
       <div
         aria-hidden
         className="absolute inset-0 -z-10 bg-[radial-gradient(60%_50%_at_50%_0%,color-mix(in_oklch,var(--primary)_28%,transparent),transparent_70%)] animate-glow-pulse"
@@ -44,16 +61,16 @@ export default function HeroClient() {
 
           <motion.h1
             variants={item}
-            className="mt-4 font-display text-4xl font-bold leading-[1.05] sm:text-5xl lg:text-6xl"
+            className="mt-5 font-body text-5xl font-extrabold tracking-tight leading-[0.98] sm:text-7xl lg:text-8xl"
           >
             {t.hero.title}
           </motion.h1>
 
-          <motion.p variants={item} className="mt-5 max-w-lg text-lg text-muted-foreground">
+          <motion.p variants={item} className="mt-6 max-w-lg text-lg sm:text-xl text-muted-foreground">
             {t.hero.subtitle}
           </motion.p>
 
-          <motion.div variants={item} className="mt-8 flex flex-wrap items-center gap-4">
+          <motion.div variants={item} className="mt-10 flex flex-wrap items-center gap-4">
             <Button as="a" href={whatsappHref} target="_blank" rel="noreferrer">
               {t.hero.ctaPrimary}
             </Button>
@@ -64,12 +81,18 @@ export default function HeroClient() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.85, rotate: -8 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ duration: 0.9, ease: 'easeOut', delay: 0.2 }}
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.1, ease: EASE_APPLE, delay: 0.2 }}
+          style={{ y: glyphY }}
           className="mx-auto w-full max-w-sm"
         >
-          <MotoGlyph className="w-full drop-shadow-[0_0_40px_color-mix(in_oklch,var(--primary)_35%,transparent)]" />
+          <motion.div
+            animate={{ y: [0, -14, 0] }}
+            transition={{ duration: 5, ease: 'easeInOut', repeat: Infinity }}
+          >
+            <MotoGlyph className="w-full drop-shadow-[0_0_50px_color-mix(in_oklch,var(--primary)_40%,transparent)]" />
+          </motion.div>
         </motion.div>
       </div>
     </section>

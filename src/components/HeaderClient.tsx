@@ -23,7 +23,7 @@ export default function HeaderClient() {
 
   return (
     <MotionRoot>
-    <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-background/70 border-b border-border">
+    <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-background/60 shadow-[0_1px_0_0_rgba(255,255,255,0.06)]">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
         <a href="#top" className="flex items-center gap-2">
           <MotoGlyph className="h-9 w-9" decorative />
@@ -47,7 +47,7 @@ export default function HeaderClient() {
             type="button"
             aria-label={t.languageToggle.label}
             onClick={() => setLang(lang === 'es' ? 'en' : 'es')}
-            className="rounded-md border border-border px-2.5 py-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground hover:text-foreground hover:border-primary transition-colors"
+            className="rounded-full border border-border px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground hover:text-foreground hover:border-primary transition-colors"
           >
             {lang === 'es' ? 'EN' : 'ES'}
           </button>
@@ -70,7 +70,7 @@ export default function HeaderClient() {
             aria-label="Menu"
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((open) => !open)}
-            className="md:hidden rounded-md border border-border p-2"
+            className="md:hidden rounded-full border border-border p-2.5"
           >
             <span className="sr-only">Menu</span>
             <div className="flex h-4 w-5 flex-col justify-between">
@@ -88,8 +88,8 @@ export default function HeaderClient() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="md:hidden overflow-hidden border-t border-border bg-background"
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="md:hidden overflow-hidden bg-background/95 backdrop-blur-xl"
           >
             <div className="flex flex-col gap-1 px-4 py-3">
               {NAV_ANCHORS.map((anchor) => (

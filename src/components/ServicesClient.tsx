@@ -9,7 +9,7 @@ export default function ServicesClient() {
 
   return (
     <MotionRoot>
-    <section id="services" className="speed-divider relative scroll-mt-24 py-24">
+    <section id="services" className="relative scroll-mt-24 py-28 sm:py-36">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <SectionHeading
           index="01"
@@ -18,15 +18,16 @@ export default function ServicesClient() {
           subtitle={t.services.subtitle}
         />
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {t.services.items.map((service, i) => (
             <motion.article
               key={service.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 24, scale: 0.98 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              whileHover={{ y: -6 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, delay: (i % 3) * 0.1 }}
-              className="group relative overflow-hidden rounded-lg border border-border bg-card p-6"
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: (i % 3) * 0.08 }}
+              className="card-surface group relative overflow-hidden p-7"
             >
               <span className="font-display text-sm font-semibold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
                 {String(i + 1).padStart(2, '0')}

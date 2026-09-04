@@ -37,8 +37,8 @@ const variantClasses: Record<Variant, string> = {
   // WCAG AA, text-primary-foreground must clear 4.5:1 against BOTH ends,
   // and plain --accent only manages 2.44:1 there (see globals.css).
   primary:
-    'bg-gradient-to-r from-primary to-accent-strong text-primary-foreground shadow-[0_8px_24px_color-mix(in_oklch,var(--primary)_45%,transparent)]',
-  ghost: 'bg-transparent text-foreground border border-border hover:border-primary',
+    'bg-gradient-to-r from-primary to-accent-strong text-primary-foreground shadow-[0_10px_30px_-8px_color-mix(in_oklch,var(--primary)_55%,transparent)]',
+  ghost: 'bg-white/[0.03] text-foreground border border-border hover:bg-white/[0.06] hover:border-primary',
 };
 
 const MotionAnchor = motion.a;
@@ -48,17 +48,17 @@ export function Button(props: ButtonProps) {
   const { variant = 'primary', className, children, ...rest } = props;
 
   const sharedClassName = cn(
-    'inline-flex items-center justify-center gap-2 rounded-md px-6 py-3',
-    'font-display text-base font-semibold tracking-wide',
-    'transition-shadow duration-300',
+    'inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5',
+    'font-body text-base font-semibold',
+    'transition-[background-color,box-shadow,border-color] duration-300',
     variantClasses[variant],
     className,
   );
 
   const motionProps = {
-    whileHover: { scale: 1.04 },
-    whileTap: { scale: 0.97 },
-    transition: { type: 'spring', stiffness: 400, damping: 22 },
+    whileHover: { scale: 1.03, y: -1 },
+    whileTap: { scale: 0.97, y: 0 },
+    transition: { type: 'spring', stiffness: 380, damping: 24 },
   } as const;
 
   if (props.as === 'a') {

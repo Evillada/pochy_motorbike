@@ -15,8 +15,14 @@ export function SectionHeading({ index, eyebrow, title, subtitle, align = 'left'
         </span>
         <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{eyebrow}</span>
       </div>
-      <h2 className="mt-2 font-display text-3xl sm:text-4xl font-bold text-foreground">{title}</h2>
-      {subtitle ? <p className="mt-3 text-muted-foreground max-w-xl">{subtitle}</p> : null}
+      <h2 className="mt-3 font-body text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05] text-foreground">
+        {title}
+      </h2>
+      {subtitle ? (
+        <p className={`mt-4 text-lg text-muted-foreground max-w-xl ${align === 'center' ? 'mx-auto' : ''}`}>
+          {subtitle}
+        </p>
+      ) : null}
     </div>
   );
 }

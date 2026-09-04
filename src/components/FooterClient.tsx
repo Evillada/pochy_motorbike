@@ -12,7 +12,7 @@ export default function FooterClient() {
 
   return (
     <MotionRoot>
-    <footer id="contact" className="border-t border-border scroll-mt-24 py-12">
+    <footer id="contact" className="scroll-mt-24 py-16 sm:py-20">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 text-center sm:px-6">
         <MotoGlyph className="h-12 w-12" decorative />
         <p className="max-w-sm text-sm text-muted-foreground">{t.footer.tagline}</p>
