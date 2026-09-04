@@ -200,10 +200,21 @@ export default {
 
 - [ ] **Step 6: Create `vitest.config.ts`**
 
+The `@/*` path alias in `tsconfig.json` only resolves for Astro's own build —
+Vitest runs its own, separate Vite config and needs the alias declared here
+too, or every `@/...` import in a test (starting in Task 4) fails to
+resolve.
+
 ```ts
+import path from 'path';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
   test: {
     environment: 'jsdom',
     globals: true,
@@ -939,11 +950,25 @@ interface BaseProps {
   children: ReactNode;
 }
 
+// Framer Motion's motion.button/motion.a redefine these DOM event handlers
+// with incompatible signatures (e.g. onAnimationStart takes a Framer
+// AnimationDefinition, not a DOM AnimationEvent). Omitting them from the
+// native attribute types below keeps the two APIs from colliding — Button
+// never needs to expose them, since nothing in this project passes
+// onAnimationStart/onDrag* to a Button.
+type MotionConflictingProps =
+  | 'onAnimationStart'
+  | 'onAnimationEnd'
+  | 'onAnimationIteration'
+  | 'onDrag'
+  | 'onDragStart'
+  | 'onDragEnd';
+
 type ButtonAsButton = BaseProps &
-  ButtonHTMLAttributes<HTMLButtonElement> & { as?: 'button' };
+  Omit<ButtonHTMLAttributes<HTMLButtonElement>, MotionConflictingProps> & { as?: 'button' };
 
 type ButtonAsAnchor = BaseProps &
-  AnchorHTMLAttributes<HTMLAnchorElement> & { as: 'a'; href: string };
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, MotionConflictingProps> & { as: 'a'; href: string };
 
 export type ButtonProps = ButtonAsButton | ButtonAsAnchor;
 
@@ -974,7 +999,10 @@ export function Button(props: ButtonProps) {
   } as const;
 
   if (props.as === 'a') {
-    const { as: _as, href, ...anchorRest } = rest as AnchorHTMLAttributes<HTMLAnchorElement> & {
+    const { as: _as, href, ...anchorRest } = rest as Omit<
+      AnchorHTMLAttributes<HTMLAnchorElement>,
+      MotionConflictingProps
+    > & {
       href: string;
     };
     return (
@@ -984,7 +1012,10 @@ export function Button(props: ButtonProps) {
     );
   }
 
-  const { as: _as, ...buttonRest } = rest as ButtonHTMLAttributes<HTMLButtonElement>;
+  const { as: _as, ...buttonRest } = rest as Omit<
+    ButtonHTMLAttributes<HTMLButtonElement>,
+    MotionConflictingProps
+  >;
   return (
     <MotionButton type="button" className={sharedClassName} {...motionProps} {...buttonRest}>
       {children}
@@ -1130,7 +1161,17 @@ export function MotionRoot({ children }: MotionRootProps) {
 Run: `npx vitest run`
 Expected: PASS (10 tests total).
 
-- [ ] **Step 9: Commit**
+- [ ] **Step 9: Type-check**
+
+Run: `npm run check`
+Expected: 0 errors. (Button's discriminated union spreads native HTML
+attributes onto Framer Motion components; if this reports `ts(2322)` on
+`onAnimationStart`/`onDrag*`, see the `MotionConflictingProps` Omit already
+applied above — Framer Motion's motion.button/motion.a redefine those six
+handlers with incompatible signatures, so the native attribute types must
+omit them before being spread onto a motion component.)
+
+- [ ] **Step 10: Commit**
 
 ```bash
 git add -A
