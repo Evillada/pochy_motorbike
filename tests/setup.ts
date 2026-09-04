@@ -9,13 +9,19 @@ Object.defineProperty(navigator, 'language', {
   configurable: true,
 });
 
-// Mock IntersectionObserver for framer-motion's whileInView
-global.IntersectionObserver = class IntersectionObserver {
-  constructor() {}
-  disconnect() {}
-  observe() {}
-  takeRecords() {
+// Mock IntersectionObserver for framer-motion's whileInView — jsdom doesn't
+// implement it. Typed against the real interface (not `any`) so this stays
+// under strict-mode checking like the rest of the codebase.
+class MockIntersectionObserver implements IntersectionObserver {
+  readonly root: Element | Document | null = null;
+  readonly rootMargin: string = '';
+  readonly thresholds: ReadonlyArray<number> = [];
+  disconnect(): void {}
+  observe(): void {}
+  takeRecords(): IntersectionObserverEntry[] {
     return [];
   }
-  unobserve() {}
-} as any;
+  unobserve(): void {}
+}
+
+global.IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver;
