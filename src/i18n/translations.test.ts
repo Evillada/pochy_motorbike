@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { translations } from './translations';
+import { LANGS, translations } from './translations';
 
 function collectKeys(obj: unknown, prefix = ''): string[] {
   if (Array.isArray(obj)) {
@@ -14,14 +14,16 @@ function collectKeys(obj: unknown, prefix = ''): string[] {
 }
 
 describe('translations', () => {
-  it('es and en expose the exact same key shape', () => {
-    const esKeys = collectKeys(translations.es).sort();
-    const enKeys = collectKeys(translations.en).sort();
-    expect(enKeys).toEqual(esKeys);
+  const esKeys = collectKeys(translations.es).sort();
+
+  it.each(LANGS)('%s exposes the exact same key shape as es', (lang) => {
+    expect(collectKeys(translations[lang]).sort()).toEqual(esKeys);
   });
 
-  it('has at least one service item per language', () => {
-    expect(translations.es.services.items.length).toBeGreaterThan(0);
-    expect(translations.en.services.items.length).toBe(translations.es.services.items.length);
+  it.each(LANGS)('%s has the same number of list items as es', (lang) => {
+    const t = translations[lang];
+    expect(t.services.items.length).toBe(translations.es.services.items.length);
+    expect(t.financing.options.length).toBe(translations.es.financing.options.length);
+    expect(t.whyUs.points.length).toBe(translations.es.whyUs.points.length);
   });
 });

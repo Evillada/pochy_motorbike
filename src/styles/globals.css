@@ -4,40 +4,30 @@
 
 @layer base {
   :root {
-    --background: oklch(0.09 0.015 30);
-    --foreground: oklch(0.97 0.01 90);
-    --card: oklch(0.15 0.02 30);
-    --card-foreground: oklch(0.97 0.01 90);
+    --background: #000000;
+    --foreground: oklch(0.96 0.012 85);
+    --card: #141414;
+    --card-foreground: oklch(0.96 0.012 85);
 
-    /* Darkened from oklch(0.58 0.22 25) — the previous value measured only
-       4.44:1 against --primary-foreground (marginal for WCAG AA's 4.5:1).
-       Computed with the WCAG relative-luminance formula: 6.17:1. */
-    --primary: oklch(0.5 0.2 25);
-    --primary-foreground: oklch(0.98 0.02 25);
+    /* The logo's red (#f81a2c) nudged one step deeper: the exact logo value
+       gives white text only 4.06:1; this keeps it at 4.71:1 (WCAG AA). */
+    --primary: #e31b2d;
+    --primary-foreground: #ffffff;
 
-    --accent: oklch(0.72 0.19 55);
-    --accent-foreground: oklch(0.14 0.02 55);
+    /* Champagne: eyebrows, links, icons and hairline highlights. */
+    --accent: oklch(0.84 0.055 85);
+    --accent-foreground: oklch(0.18 0.01 85);
+    /* Bronze end of the metallic champagne gradient on icons (decorative only). */
+    --accent-deep: oklch(0.64 0.07 70);
 
-    /* Darker variant of --accent, used ONLY as the accent end of the
-       primary Button's gradient background (never for text/links — those
-       keep using --accent, which already passes contrast on its own, e.g.
-       text-accent on --background measures ~7.9:1). The unmodified --accent
-       measured only 2.44:1 against --primary-foreground, well under WCAG
-       AA's 4.5:1 for normal text. Computed: 8.25:1. */
-    --accent-strong: oklch(0.42 0.17 55);
+    --muted: #1a1a1a;
+    --muted-foreground: oklch(0.74 0.012 80);
 
-    --muted: oklch(0.2 0.015 30);
-    --muted-foreground: oklch(0.72 0.02 60);
+    /* Hairline for decorative edges. Interactive controls also carry a fill
+       or a text label, so they never rely on this edge alone. */
+    --border: oklch(1 0 0 / 0.1);
+    --ring: oklch(0.84 0.055 85);
 
-    /* Raised from oklch(0.28 0.02 30) — the previous value measured only
-       1.40:1 against --background, well under WCAG 1.4.11's 3:1 minimum
-       for non-text UI boundaries (relied on as the sole edge by the ghost
-       Button variant and the header language toggle). Computed: 3.40:1. */
-    --border: oklch(0.5 0.02 30);
-    --ring: oklch(0.58 0.22 25);
-
-    /* Raised from 0.75rem for a softer, less "boxed" corner on controls
-       (cards use their own larger fixed radius, see .card-surface below). */
     --radius: 1rem;
   }
 
@@ -54,11 +44,23 @@
     background-color: var(--background);
     color: var(--foreground);
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Film grain over the whole page — removes the flat "digital black" look. */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   ::selection {
-    background-color: color-mix(in oklch, var(--primary) 60%, transparent);
-    color: var(--primary-foreground);
+    background-color: color-mix(in oklch, var(--accent) 35%, transparent);
+    color: var(--foreground);
   }
 
   .scrollbar-hide {
@@ -70,29 +72,174 @@
     display: none;
   }
 
-  /* Borderless, floating card surface: soft shadow + faint glass tint
-     instead of a hard border, on a larger radius — replaces
-     `rounded-lg border border-border bg-card` across section cards. */
+  /* Apple-style surface: a hairline edge, a faint top highlight and a soft,
+     wide shadow. --mx/--my are set by the pointer script in Layout.astro. */
   .card-surface {
-    background-color: color-mix(in oklch, var(--card) 78%, transparent);
-    backdrop-filter: blur(12px);
+    position: relative;
+    background-color: color-mix(in oklch, var(--card) 72%, transparent);
+    backdrop-filter: blur(16px) saturate(140%);
     border-radius: 1.75rem;
     box-shadow:
-      0 30px 60px -30px rgba(0, 0, 0, 0.65),
-      0 1px 0 0 color-mix(in oklch, var(--foreground) 6%, transparent) inset;
+      0 0 0 1px var(--border),
+      0 1px 0 0 oklch(1 0 0 / 0.06) inset,
+      0 30px 60px -32px rgba(0, 0, 0, 0.7);
   }
 
-  /* Faint technical-blueprint grid — workshop-schematic texture behind a
-     section, without a stock photo. Fades out toward the edges via a mask
-     so it reads as ambient texture, not a hard-edged tile. */
-  .blueprint-grid {
-    background-image:
-      linear-gradient(color-mix(in oklch, var(--border) 60%, transparent) 1px, transparent 1px),
-      linear-gradient(90deg, color-mix(in oklch, var(--border) 60%, transparent) 1px, transparent 1px);
-    background-size: 48px 48px;
-    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 40%, transparent 90%);
-    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 40%, transparent 90%);
-    opacity: 0.5;
+  .card-surface::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: radial-gradient(
+      280px circle at var(--mx, 50%) var(--my, -40%),
+      color-mix(in oklch, var(--accent) 75%, transparent),
+      transparent 65%
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+  }
+
+  @media (hover: hover) {
+    .card-surface:hover::before {
+      opacity: 1;
+    }
+  }
+
+  /* Iridescent hairline ring, slowly rotating — the "premium card" finish. */
+  @property --holo-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+  }
+
+  .holo-ring {
+    position: relative;
+  }
+
+  .holo-ring::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+      from var(--holo-angle),
+      #f5d0a9,
+      #f9a8d4,
+      #c4b5fd,
+      #93c5fd,
+      #99f6e4,
+      #f5d0a9
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: holo-spin 6s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes holo-spin {
+    to {
+      --holo-angle: 360deg;
+    }
+  }
+
+  /* Thin champagne rule between sections; draws outward as it scrolls in. */
+  .hairline-divider {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklch, var(--accent) 45%, transparent) 50%,
+      transparent
+    );
+  }
+
+  /* Headline catches a single pass of champagne light after it rises in. */
+  .text-shine {
+    background-image: linear-gradient(
+      110deg,
+      var(--foreground) 0%,
+      var(--foreground) 42%,
+      var(--accent) 50%,
+      var(--foreground) 58%,
+      var(--foreground) 100%
+    );
+    background-size: 300% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Periodic light sweep across the primary button. */
+  .btn-shine {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(110deg, transparent 35%, oklch(1 0 0 / 0.22) 50%, transparent 65%);
+    translate: -120% 0;
+    animation: btn-shine 7s ease-in-out 1.5s infinite;
+  }
+
+  @keyframes btn-shine {
+    0%,
+    75% {
+      translate: -120% 0;
+    }
+    100% {
+      translate: 120% 0;
+    }
+  }
+
+  /* Scroll-driven reveals: pure CSS, so content is fully present in the HTML
+     and simply shows statically in browsers without view timelines. Uses
+     `translate` (not `transform`) so it composes with Framer hover lifts. */
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 90%;
+    }
+
+    .hairline-divider {
+      animation: draw-line linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 40%;
+    }
+  }
+
+  @keyframes reveal {
+    from {
+      opacity: 0;
+      filter: blur(10px);
+      translate: 0 40px;
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+      translate: 0 0;
+    }
+  }
+
+  @keyframes draw-line {
+    from {
+      scale: 0 1;
+      opacity: 0;
+    }
+    to {
+      scale: 1 1;
+      opacity: 1;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -106,6 +253,16 @@
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+    }
+
+    .reveal,
+    .hairline-divider,
+    .btn-shine {
+      animation: none !important;
+    }
+
+    .btn-shine {
+      display: none;
     }
   }
 }

@@ -1,5 +1,12 @@
 ---
+import type { Lang } from '@/i18n/translations';
 import LocationHoursClient from './LocationHoursClient';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
 ---
 
-<LocationHoursClient client:visible />
+<LocationHoursClient client:visible lang={lang} />

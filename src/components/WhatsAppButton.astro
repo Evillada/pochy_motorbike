@@ -1,5 +1,12 @@
 ---
+import type { Lang } from '@/i18n/translations';
 import WhatsAppButtonClient from './WhatsAppButtonClient';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
 ---
 
-<WhatsAppButtonClient client:load />
+<WhatsAppButtonClient client:load lang={lang} />

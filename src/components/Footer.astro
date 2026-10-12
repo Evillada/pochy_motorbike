@@ -1,5 +1,12 @@
 ---
+import type { Lang } from '@/i18n/translations';
 import FooterClient from './FooterClient';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
 ---
 
-<FooterClient client:visible />
+<FooterClient client:visible lang={lang} />

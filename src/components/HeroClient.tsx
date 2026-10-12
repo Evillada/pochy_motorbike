@@ -7,29 +7,13 @@ import {
   useSpring,
   useTransform,
 } from 'framer-motion';
-import { useLanguage } from '@/i18n/useLanguage';
+import { translations, type Lang } from '@/i18n/translations';
 import { Button } from '@/components/ui/Button';
 import { MotionRoot } from '@/components/ui/MotionRoot';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
-// Apple's characteristic decelerating curve — used across this file instead
-// of the default easeOut for a softer, more premium settle.
-const EASE_APPLE = [0.16, 1, 0.3, 1] as const;
-
-const container = {
-  hidden: {},
-  show: {
-    transition: { staggerChildren: 0.15, delayChildren: 0.1 },
-  },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE_APPLE } },
-};
-
-export default function HeroClient() {
-  const { t } = useLanguage();
+export default function HeroClient({ lang }: { lang: Lang }) {
+  const t = translations[lang];
   const whatsappHref = buildWhatsAppUrl(t.hero.whatsappMessage);
 
   const sectionRef = useRef<HTMLElement>(null);
@@ -67,54 +51,46 @@ export default function HeroClient() {
     <section
       id="top"
       ref={sectionRef}
-      className="relative flex min-h-screen scroll-mt-24 items-center overflow-hidden pt-24"
+      className="relative flex scroll-mt-24 items-center overflow-hidden pt-28 pb-16 sm:pt-32 lg:min-h-[100svh] lg:pt-24 lg:pb-0"
     >
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10 bg-[radial-gradient(60%_50%_at_50%_0%,color-mix(in_oklch,var(--primary)_28%,transparent),transparent_70%)] animate-glow-pulse"
-      />
-      <div
-        aria-hidden
-        className="absolute -right-24 top-1/3 -z-10 h-[420px] w-[420px] rounded-full bg-[radial-gradient(closest-side,color-mix(in_oklch,var(--accent)_35%,transparent),transparent)]"
-      />
+      <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute -top-1/4 left-1/4 h-[70vmax] w-[70vmax] rounded-full bg-[radial-gradient(closest-side,color-mix(in_oklch,var(--accent)_14%,transparent),transparent)] animate-drift" />
+        <div className="absolute -bottom-1/3 -right-1/4 h-[60vmax] w-[60vmax] rounded-full bg-[radial-gradient(closest-side,color-mix(in_oklch,var(--primary)_12%,transparent),transparent)] animate-drift-slow" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
+      </div>
 
-      <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <motion.div variants={container} initial="hidden" animate="show">
-          <motion.span
-            variants={item}
-            className="inline-block text-xs font-semibold uppercase tracking-[0.25em] text-accent"
-          >
-            {t.hero.eyebrow}
-          </motion.span>
+      <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
+        {/* Entrance is pure CSS so the headline is visible in the server HTML
+            (and to crawlers) without waiting for React to hydrate. */}
+        <div>
+          <h1 className="font-body">
+            <span className="block text-xs font-medium uppercase tracking-[0.3em] text-accent animate-fade-up">
+              {t.hero.eyebrow}
+            </span>
+            <span className="text-shine mt-6 block pb-1 text-[2.75rem] font-semibold tracking-[-0.035em] leading-[1.02] sm:text-7xl lg:text-8xl animate-title">
+              {t.hero.title}
+            </span>
+          </h1>
 
-          <motion.h1
-            variants={item}
-            className="mt-5 font-body text-5xl font-extrabold tracking-tight leading-[0.98] sm:text-7xl lg:text-8xl"
-          >
-            {t.hero.title}
-          </motion.h1>
-
-          <motion.p variants={item} className="mt-6 max-w-lg text-lg sm:text-xl text-muted-foreground">
+          <p className="mt-6 max-w-lg text-lg leading-relaxed sm:text-xl text-muted-foreground animate-fade-up [animation-delay:300ms]">
             {t.hero.subtitle}
-          </motion.p>
+          </p>
 
-          <motion.div variants={item} className="mt-10 flex flex-wrap items-center gap-4">
-            <Button as="a" href={whatsappHref} target="_blank" rel="noreferrer">
+          <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4 animate-fade-up [animation-delay:450ms]">
+            <Button as="a" href={whatsappHref} target="_blank" rel="noreferrer" className="w-full sm:w-auto">
               {t.hero.ctaPrimary}
             </Button>
-            <Button as="a" href="#services" variant="ghost">
+            <Button as="a" href="#services" variant="ghost" className="w-full sm:w-auto">
               {t.hero.ctaSecondary}
             </Button>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.85 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.1, ease: EASE_APPLE, delay: 0.2 }}
           style={{ y: badgeY, perspective: 1200 }}
-          className="mx-auto w-full max-w-sm"
+          className="mx-auto w-full max-w-[240px] sm:max-w-xs lg:max-w-sm"
         >
+          <div className="animate-fade-in-scale">
           <motion.div
             animate={{ y: [0, -14, 0] }}
             transition={{ duration: 5, ease: 'easeInOut', repeat: Infinity }}
@@ -146,8 +122,8 @@ export default function HeroClient() {
               />
               <defs>
                 <linearGradient id="hero-ring-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="var(--primary)" />
-                  <stop offset="100%" stopColor="var(--accent)" />
+                  <stop offset="0%" stopColor="var(--accent)" />
+                  <stop offset="100%" stopColor="var(--accent-deep)" />
                 </linearGradient>
               </defs>
             </motion.svg>
@@ -157,15 +133,17 @@ export default function HeroClient() {
               style={{
                 transform: 'translateZ(30px)',
                 boxShadow:
-                  '0 40px 80px -30px color-mix(in oklch, var(--primary) 45%, transparent), inset 0 1px 0 0 rgba(255,255,255,0.08)',
+                  '0 0 0 1px var(--border), 0 50px 90px -40px rgba(0,0,0,0.9), 0 0 80px -30px color-mix(in oklch, var(--accent) 35%, transparent), inset 0 1px 0 0 rgba(255,255,255,0.08)',
                 background:
                   'linear-gradient(155deg, color-mix(in oklch, var(--card) 90%, transparent), color-mix(in oklch, var(--background) 95%, transparent))',
               }}
             >
               <img
                 src="/images/pochy-logo.jpg"
-                alt="Pochy MotorBike"
-                className="w-full rounded-2xl mix-blend-screen"
+                alt="Pochy Motorbike"
+                width={536}
+                height={367}
+                className="h-auto w-full rounded-2xl mix-blend-screen"
               />
 
               {/* Diagonal light sweep — reads as a badge catching a passing
@@ -175,13 +153,14 @@ export default function HeroClient() {
                 className="pointer-events-none absolute inset-0 -skew-x-12"
                 style={{
                   background:
-                    'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.18) 45%, transparent 60%)',
+                    'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.12) 45%, transparent 60%)',
                 }}
                 animate={{ x: ['-120%', '160%'] }}
                 transition={{ duration: 3.2, ease: 'easeInOut', repeat: Infinity, repeatDelay: 2.4 }}
               />
             </div>
           </motion.div>
+          </div>
         </motion.div>
       </div>
     </section>

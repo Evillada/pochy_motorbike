@@ -5,7 +5,7 @@ import { translations } from '@/i18n/translations';
 
 describe('WhyUsClient', () => {
   it('renders every trust point title', () => {
-    render(<WhyUsClient />);
+    render(<WhyUsClient lang="es" />);
     for (const point of translations.es.whyUs.points) {
       expect(screen.getByText(point.title)).toBeInTheDocument();
     }

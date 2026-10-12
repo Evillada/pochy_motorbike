@@ -1,5 +1,12 @@
 ---
+import type { Lang } from '@/i18n/translations';
 import FinancingClient from './FinancingClient';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
 ---
 
-<FinancingClient client:visible />
+<FinancingClient client:visible lang={lang} />

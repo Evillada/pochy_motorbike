@@ -1,4 +1,5 @@
 import { useId, type ReactNode } from 'react';
+import { ToneGradient, type Tone } from './ToneGradient';
 
 export type ServiceIconKind = 'maintenance' | 'oil' | 'brakes' | 'electrical' | 'parts';
 
@@ -12,16 +13,21 @@ interface ServiceIconProps {
  * ring used behind the Hero badge — small, consistent visual language
  * instead of a generic icon-font glyph or a stock photo per card.
  */
+const KIND_TONE: Record<ServiceIconKind, Tone> = {
+  maintenance: 'steel',
+  oil: 'pearl',
+  brakes: 'red',
+  electrical: 'electric',
+  parts: 'champagne',
+};
+
 export function ServiceIcon({ kind, className = '' }: ServiceIconProps) {
   const gradientId = `svc-gradient-${useId()}`;
 
   return (
     <svg viewBox="0 0 64 64" className={className} aria-hidden>
       <defs>
-        <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="var(--primary)" />
-          <stop offset="100%" stopColor="var(--accent)" />
-        </linearGradient>
+        <ToneGradient id={gradientId} tone={KIND_TONE[kind]} size={64} />
       </defs>
 
       <circle
@@ -35,7 +41,7 @@ export function ServiceIcon({ kind, className = '' }: ServiceIconProps) {
         opacity="0.5"
       />
 
-      <g fill="none" stroke={`url(#${gradientId})`} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <g fill="none" stroke={`url(#${gradientId})`} strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
         {ICON_PATHS[kind]}
       </g>
     </svg>

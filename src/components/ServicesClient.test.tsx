@@ -6,12 +6,17 @@ import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 describe('ServicesClient', () => {
   it('renders one card per service with a WhatsApp quote link', () => {
-    render(<ServicesClient />);
+    render(<ServicesClient lang="es" />);
 
     const items = translations.es.services.items;
     expect(screen.getAllByText('Cotizar')).toHaveLength(items.length);
 
     const oilChangeLink = screen.getByRole('link', { name: /Cotizar.*Cambio de aceite/s });
     expect(oilChangeLink).toHaveAttribute('href', buildWhatsAppUrl(items[1].whatsappMessage));
+  });
+
+  it('does not number the section or its cards', () => {
+    render(<ServicesClient lang="es" />);
+    expect(screen.queryByText(/^0\d$/)).not.toBeInTheDocument();
   });
 });

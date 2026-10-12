@@ -6,7 +6,7 @@ import { translations } from '@/i18n/translations';
 
 describe('HeroClient', () => {
   it('renders the Spanish headline and a primary CTA linking to WhatsApp', () => {
-    render(<HeroClient />);
+    render(<HeroClient lang="es" />);
 
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Tu moto, en manos que sí saben.');
 
@@ -15,7 +15,7 @@ describe('HeroClient', () => {
   });
 
   it('renders a secondary CTA that anchors to the services section', () => {
-    render(<HeroClient />);
+    render(<HeroClient lang="es" />);
     expect(screen.getByRole('link', { name: 'Ver servicios' })).toHaveAttribute('href', '#services');
   });
 });

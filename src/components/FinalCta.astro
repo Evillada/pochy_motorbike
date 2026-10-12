@@ -1,5 +1,12 @@
 ---
+import type { Lang } from '@/i18n/translations';
 import FinalCtaClient from './FinalCtaClient';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
 ---
 
-<FinalCtaClient client:visible />
+<FinalCtaClient client:visible lang={lang} />

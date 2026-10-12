@@ -33,12 +33,10 @@ type ButtonAsAnchor = BaseProps &
 export type ButtonProps = ButtonAsButton | ButtonAsAnchor;
 
 const variantClasses: Record<Variant, string> = {
-  // Uses --accent-strong (not --accent) at the gradient's accent end: at
-  // WCAG AA, text-primary-foreground must clear 4.5:1 against BOTH ends,
-  // and plain --accent only manages 2.44:1 there (see globals.css).
   primary:
-    'bg-gradient-to-r from-primary to-accent-strong text-primary-foreground shadow-[0_10px_30px_-8px_color-mix(in_oklch,var(--primary)_55%,transparent)]',
-  ghost: 'bg-white/[0.03] text-foreground border border-border hover:bg-white/[0.06] hover:border-primary',
+    'relative overflow-hidden bg-primary text-primary-foreground shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18),0_0_0_1px_rgba(255,255,255,0.06),0_12px_32px_-14px_color-mix(in_oklch,var(--primary)_70%,transparent)]',
+  ghost:
+    'bg-white/[0.06] text-foreground shadow-[0_0_0_1px_var(--border)] backdrop-blur-md hover:bg-white/[0.1] hover:shadow-[0_0_0_1px_color-mix(in_oklch,var(--accent)_45%,transparent)]',
 };
 
 const MotionAnchor = motion.a;
@@ -49,15 +47,15 @@ export function Button(props: ButtonProps) {
 
   const sharedClassName = cn(
     'inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5',
-    'font-body text-base font-semibold',
-    'transition-[background-color,box-shadow,border-color] duration-300',
+    'font-body text-base font-medium tracking-[-0.01em]',
+    'transition-[background-color,box-shadow] duration-300',
     variantClasses[variant],
     className,
   );
 
   const motionProps = {
-    whileHover: { scale: 1.03, y: -1 },
-    whileTap: { scale: 0.97, y: 0 },
+    whileHover: { scale: 1.02 },
+    whileTap: { scale: 0.98 },
     transition: { type: 'spring', stiffness: 380, damping: 24 },
   } as const;
 
@@ -68,7 +66,8 @@ export function Button(props: ButtonProps) {
     };
     return (
       <MotionAnchor href={href} className={sharedClassName} {...motionProps} {...anchorRest}>
-        {children}
+        {variant === 'primary' && <span aria-hidden className="btn-shine" />}
+        <span className="relative">{children}</span>
       </MotionAnchor>
     );
   }
@@ -78,7 +77,8 @@ export function Button(props: ButtonProps) {
   };
   return (
     <MotionButton type="button" className={sharedClassName} {...motionProps} {...buttonRest}>
-      {children}
+      {variant === 'primary' && <span aria-hidden className="btn-shine" />}
+      <span className="relative">{children}</span>
     </MotionButton>
   );
 }

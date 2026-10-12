@@ -4,7 +4,7 @@ import FooterClient from './FooterClient';
 
 describe('FooterClient', () => {
   it('links to the Instagram profile and shows the current year', () => {
-    render(<FooterClient />);
+    render(<FooterClient lang="es" />);
 
     const instagramLink = screen.getByRole('link', { name: 'Síguenos en Instagram' });
     expect(instagramLink).toHaveAttribute('href', 'https://www.instagram.com/pochy_motorbike/');

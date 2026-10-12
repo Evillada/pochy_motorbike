@@ -5,13 +5,22 @@ import { buildWhatsAppUrl } from '@/lib/whatsapp';
 import { translations } from '@/i18n/translations';
 
 describe('FinancingClient', () => {
-  it('renders the Addi callout description and a WhatsApp CTA', () => {
-    render(<FinancingClient />);
-    // Both the description and the CTA label contain the word "Addi", so
-    // match the full description text (its element's only text node) rather
-    // than a bare /Addi/ substring, which would match both and throw.
+  it('renders the financing description and a WhatsApp CTA for Addi, Sistecrédito, and Redeban', () => {
+    render(<FinancingClient lang="es" />);
     expect(screen.getByText(translations.es.financing.description)).toBeInTheDocument();
-    const cta = screen.getByRole('link', { name: 'Preguntar por Addi' });
-    expect(cta).toHaveAttribute('href', buildWhatsAppUrl(translations.es.financing.whatsappMessage));
+
+    for (const [label, option] of [
+      ['Preguntar por Addi', translations.es.financing.options[0]],
+      ['Preguntar por Sistecrédito', translations.es.financing.options[1]],
+      ['Pagar con Redeban', translations.es.financing.options[2]],
+    ] as const) {
+      const cta = screen.getByRole('link', { name: label });
+      expect(cta).toHaveAttribute('href', buildWhatsAppUrl(option.whatsappMessage));
+    }
+  });
+
+  it('labels the installment gauge in the page language', () => {
+    render(<FinancingClient lang="fr" />);
+    expect(screen.getByText('Prêt à rouler')).toBeInTheDocument();
   });
 });

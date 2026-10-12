@@ -1,5 +1,12 @@
 ---
+import type { Lang } from '@/i18n/translations';
 import HeroClient from './HeroClient';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
 ---
 
-<HeroClient client:load />
+<HeroClient client:load lang={lang} />

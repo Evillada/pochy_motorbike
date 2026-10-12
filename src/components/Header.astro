@@ -1,5 +1,12 @@
 ---
+import type { Lang } from '@/i18n/translations';
 import HeaderClient from './HeaderClient';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
 ---
 
-<HeaderClient client:load />
+<HeaderClient client:load lang={lang} />

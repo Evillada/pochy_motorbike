@@ -6,7 +6,7 @@ import { translations } from '@/i18n/translations';
 
 describe('WhatsAppButtonClient', () => {
   it('links to wa.me with the shop number and a default greeting', () => {
-    render(<WhatsAppButtonClient />);
+    render(<WhatsAppButtonClient lang="es" />);
     const link = screen.getByRole('link', { name: /whatsapp/i });
     expect(link).toHaveAttribute('href', buildWhatsAppUrl(translations.es.hero.whatsappMessage));
   });

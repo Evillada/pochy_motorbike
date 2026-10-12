@@ -1,5 +1,12 @@
 ---
+import type { Lang } from '@/i18n/translations';
 import WhyUsClient from './WhyUsClient';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
 ---
 
-<WhyUsClient client:visible />
+<WhyUsClient client:visible lang={lang} />

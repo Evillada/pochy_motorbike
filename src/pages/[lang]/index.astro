@@ -1,0 +1,12 @@
+---
+import LandingPage from '../../components/LandingPage.astro';
+import { DEFAULT_LANG, LANGS, type Lang } from '@/i18n/translations';
+
+export function getStaticPaths() {
+  return LANGS.filter((lang) => lang !== DEFAULT_LANG).map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+---
+
+<LandingPage lang={lang} />
