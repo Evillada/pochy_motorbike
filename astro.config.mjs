@@ -3,7 +3,13 @@ import { loadEnv } from 'vite';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 
-const { PUBLIC_SITE_URL } = loadEnv(process.env.NODE_ENV ?? 'production', process.cwd(), '');
+const env = loadEnv(process.env.NODE_ENV ?? 'production', process.cwd(), '');
+
+// Vercel exposes the project's production domain (host only, no protocol) at
+// build time; an explicit PUBLIC_SITE_URL, e.g. a custom domain, wins over it.
+const SITE_URL =
+  env.PUBLIC_SITE_URL ||
+  (env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${env.VERCEL_PROJECT_PRODUCTION_URL}` : undefined);
 
 // Canonical, hreflang, Open Graph, JSON-LD and the sitemap are all built from
 // `site`. Building without it would ship URLs pointing at the wrong domain,
@@ -12,9 +18,9 @@ const requireSiteUrl = {
   name: 'require-site-url',
   hooks: {
     'astro:build:start': () => {
-      if (!PUBLIC_SITE_URL) {
+      if (!SITE_URL) {
         throw new Error(
-          'PUBLIC_SITE_URL is not set. Copy .env.example to .env (or set it in your hosting provider) with the real domain, e.g. https://pochymotorbike.com',
+          'No site URL. Set PUBLIC_SITE_URL (see .env.example) to the real domain, e.g. https://pochymotorbike.com — on Vercel it defaults to the project production domain.',
         );
       }
     },
@@ -22,7 +28,7 @@ const requireSiteUrl = {
 };
 
 export default defineConfig({
-  site: PUBLIC_SITE_URL || undefined,
+  site: SITE_URL,
   integrations: [
     react(),
     tailwind({
