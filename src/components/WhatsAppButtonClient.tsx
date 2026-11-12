@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { translations, type Lang } from '@/i18n/translations';
 import { MotionRoot } from '@/components/ui/MotionRoot';
 import { buildWhatsAppUrl } from '@/lib/whatsapp';
+import { BUSINESS } from '@/lib/business';
 
 export default function WhatsAppButtonClient({ lang }: { lang: Lang }) {
   const t = translations[lang];
@@ -38,6 +39,26 @@ export default function WhatsAppButtonClient({ lang }: { lang: Lang }) {
       >
         <span className="absolute inset-0 rounded-full bg-red-600 animate-ping" />
         <span className="relative">1</span>
+      </span>
+    </motion.a>
+    <motion.a
+      href={BUSINESS.reviewUrl}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={t.location.reviewsCtaLabel}
+      title={t.location.reviewsCtaLabel}
+      initial={{ opacity: 0, scale: 0.6 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.4, delay: 1.2, type: 'spring' }}
+      whileHover={{ scale: 1.08, rotate: 12 }}
+      whileTap={{ scale: 0.95 }}
+      className="fixed bottom-5 left-5 z-50 sm:bottom-6 sm:left-6"
+    >
+      <span aria-hidden className="absolute inset-0 rounded-full bg-[#fbbc04] animate-halo" />
+      <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#fcd34d] to-[#f59e0b] text-white shadow-[0_10px_30px_-6px_rgba(251,188,4,0.45)]">
+        <svg viewBox="0 0 24 24" className="h-7 w-7 fill-current" aria-hidden>
+          <path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z" />
+        </svg>
       </span>
     </motion.a>
     </MotionRoot>

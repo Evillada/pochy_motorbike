@@ -64,6 +64,9 @@ export interface Translations {
     appointmentWhatsappMessage: string;
     mapCtaLabel: string;
     mapTitle: string;
+    reviewsTitle: string;
+    reviewsCount: string;
+    reviewsCtaLabel: string;
   };
   finalCta: {
     title: string;
@@ -197,6 +200,9 @@ const es: Translations = {
     appointmentWhatsappMessage: 'Hola, quiero solicitar una cita en Pochy Motorbike.',
     mapCtaLabel: 'Ver en Google Maps',
     mapTitle: 'Mapa de Pochy Motorbike en Medellín',
+    reviewsTitle: '¿Ya rodaste con nosotros? Cuéntanos cómo te fue',
+    reviewsCount: 'opiniones en Google',
+    reviewsCtaLabel: 'Dejar reseña en Google',
   },
   finalCta: {
     title: '¿Tu moto necesita atención?',
@@ -329,6 +335,9 @@ const en: Translations = {
     appointmentWhatsappMessage: "Hi, I'd like to request an appointment at Pochy Motorbike.",
     mapCtaLabel: 'View on Google Maps',
     mapTitle: 'Map of Pochy Motorbike in Medellín',
+    reviewsTitle: 'Ridden with us? Tell us how it went',
+    reviewsCount: 'reviews on Google',
+    reviewsCtaLabel: 'Leave a Google review',
   },
   finalCta: {
     title: 'Does your bike need attention?',
@@ -462,6 +471,9 @@ const pt: Translations = {
     appointmentWhatsappMessage: 'Olá, quero solicitar um horário na Pochy Motorbike.',
     mapCtaLabel: 'Ver no Google Maps',
     mapTitle: 'Mapa da Pochy Motorbike em Medellín',
+    reviewsTitle: 'Já rodou com a gente? Conte como foi',
+    reviewsCount: 'avaliações no Google',
+    reviewsCtaLabel: 'Avaliar no Google',
   },
   finalCta: {
     title: 'Sua moto precisa de atenção?',
@@ -595,6 +607,9 @@ const fr: Translations = {
     appointmentWhatsappMessage: 'Bonjour, je souhaite demander un rendez-vous chez Pochy Motorbike.',
     mapCtaLabel: 'Voir sur Google Maps',
     mapTitle: 'Carte de Pochy Motorbike à Medellín',
+    reviewsTitle: 'Déjà roulé avec nous ? Racontez-nous',
+    reviewsCount: 'avis sur Google',
+    reviewsCtaLabel: 'Laisser un avis Google',
   },
   finalCta: {
     title: "Votre moto a besoin d'attention ?",

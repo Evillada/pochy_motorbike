@@ -114,6 +114,46 @@ export default function LocationHoursClient({ lang }: { lang: Lang }) {
             />
           </div>
         </div>
+
+        <div className="reveal card-surface mt-4 flex flex-col items-center gap-5 p-6 text-center sm:mt-6 sm:flex-row sm:justify-between sm:p-8 sm:text-left">
+          <div>
+            <p className="font-body text-lg font-semibold tracking-[-0.01em]">{t.location.reviewsTitle}</p>
+            <a
+              href={BUSINESS.reviewUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-2 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+            >
+              <span className="font-semibold text-foreground">{BUSINESS.googleRating}</span>
+              <span className="flex gap-0.5 text-accent" aria-hidden>
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <motion.svg
+                    key={i}
+                    viewBox="0 0 24 24"
+                    className="h-5 w-5 fill-current"
+                    animate={{ scale: [1, 1.2, 1], opacity: [0.85, 1, 0.85] }}
+                    transition={{ duration: 0.6, delay: i * 0.12, repeat: Infinity, repeatDelay: 3 }}
+                  >
+                    <path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z" />
+                  </motion.svg>
+                ))}
+              </span>
+              <span>
+                {BUSINESS.googleReviewCount} {t.location.reviewsCount}
+              </span>
+            </a>
+          </div>
+          <Button
+            as="a"
+            href={BUSINESS.reviewUrl}
+            target="_blank"
+            rel="noreferrer"
+            variant="ghost"
+            className="w-full shrink-0 px-5 py-3 text-sm sm:w-auto"
+          >
+            {t.location.reviewsCtaLabel}
+          </Button>
+        </div>
       </div>
     </section>
     </MotionRoot>
